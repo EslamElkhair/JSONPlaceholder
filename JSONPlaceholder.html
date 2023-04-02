@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>JSON Placeholder</title>
+</head>
+
+
+<style type="text/css">
+
+	h1,h2,h3,h4,h5,h6 {
+		margin: 0;
+	}
+	body {
+		background-color:  white;
+		margin: 0;
+	}
+
+	#user {
+		background-color:white;
+		border-radius: 100px;
+		padding: 10px;
+		font-size:20px ;
+		padding-left: 20px;
+		box-shadow: 0px 5px 10px rgba(0,0,0,0,2);
+		cursor: pointer;
+		margin-top: 15px;
+		font-family: sans-serif;
+
+	}
+
+	#user.selected {
+		border: solid #567189 6px;
+	}
+
+
+	#post {
+		background-color: white ;
+		border-radius: 10px;
+		font-size:20px;
+		padding: 10px;
+		box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+		margin-top: 15px;
+	}
+</style>
+
+<body>
+
+	<!-- MAIN CONTENT -->
+	<div id="content" style="display: flex;">
+		
+		<!-- USERS CONTAINER  -->
+		<div id="users" style="width: 30%; background-color: #0B2447; ">
+			<div style="width: 90%; height: 100px; margin: 0 auto;">
+
+
+				<div id="user">
+					<h3>Eso</h3>
+					<h3>Eso@gmail.com</h3>
+				</div>
+
+				<div id="user" class="selected">
+					<h3>Eso</h3>
+					<h3>Eso@gmail.com</h3>
+				</div>
+
+				<div id="user">
+					<h3>Eso</h3>
+					<h3>Eso@gmail.com</h3>
+				</div>
+								
+
+			</div> 
+
+		</div>
+		<!-- USERS CONTAINER  -->
+
+		<!-- POSTS CONTAINER -->
+		<div id="posts-container" style=" width: 70%; padding: 20px 0; background-color: rgb(236, 236, 236); ">
+
+			<div id="posts" style="width: 90%; margin: 0 auto;">
+
+				<div id="post">
+					<h3>hello world</h3>
+					<h4>loremloremloremloremloremloremloremlorem</h4>
+				</div>
+
+
+				<div id="post">
+					<h3>hello world</h3>
+					<h4>loremloremloremloremloremloremloremlorem</h4>
+				</div>
+
+				<div id="post">
+					<h3>hello world</h3>
+					<h4>loremloremloremloremloremloremloremlorem</h4>
+				</div>
+
+
+				<div id="post">
+					<h3>hello world</h3>
+					<h4>loremloremloremloremloremloremloremlorem</h4>
+				</div>
+
+
+			</div>
+
+		</div>
+
+		<!-- POSTS CONTAINER -->
+
+	</div>
+
+</body>
+
+
+
+<script type="text/javascript">
+	
+	function getPosts(userId) {
+	let request = new XMLHttpRequest()	
+	request.open("GET", "https://jsonplaceholder.typicode.com/posts?userId="+userId )
+	request.responseType = "json"
+	request.send()
+	request.onload = function() {
+
+		if(request.status >=200 && request.status < 300) {
+			let posts = request.response 
+
+			document.getElementById("posts").innerHTML = ""
+
+			for(post of posts) {
+				let content = `
+
+						<div id="post">
+							<h3>${post.title}</h3>
+							<h4>${post.body}</h4>
+						</div>
+						`
+
+				document.getElementById("posts").innerHTML += content
+
+			}
+		}
+		else {
+			alert("error!")
+		}
+	}
+
+	}
+
+
+	function getUsers() {
+	let request = new XMLHttpRequest()	
+	request.open("GET", "https://jsonplaceholder.typicode.com/users" )
+	request.responseType = "json"
+	request.send()
+	request.onload = function() {
+
+		if(request.status >=200 && request.status < 300) {
+			let users = request.response 
+
+			document.getElementById("users").innerHTML = ""
+
+			for(user of users) {
+				let content = `
+
+					<div id="user" onclick="userClicked(${user.id}, this)">
+					<h3>${user.name}</h3>
+					<h3>${user.email}</h3>
+					</div>
+						`
+
+				document.getElementById("users").innerHTML += content
+
+			}
+		}
+		else {
+			alert("error!")
+		}
+	}
+
+	}
+
+	getPosts(4)
+	getUsers()
+
+	function userClicked(id, selectedUser) {
+		getPosts(id)
+		selectedUsers = document.getElementsByClassName("selected")
+
+		for(user of selectedUsers) {
+			user.classList.remove("selected")
+		}
+
+		selectedUser.classList.add("selected")
+	}
+</script>
+</html>
+
+
+
+
+
+
+
